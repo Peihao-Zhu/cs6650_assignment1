@@ -1,4 +1,4 @@
-package Part1;
+package common;
 
 
 import lombok.Data;

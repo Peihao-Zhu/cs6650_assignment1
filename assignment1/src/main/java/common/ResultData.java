@@ -1,4 +1,4 @@
-package Part1;
+package common;
 
 import Part2.CsvRecord;
 import javafx.util.Pair;

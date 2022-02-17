@@ -1,17 +1,16 @@
-package Part1;
+package Part2;
 
+import common.MyHttpClient;
 import com.google.gson.Gson;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import common.ResultData;
+import javafx.util.Pair;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-public class MyThread extends Thread{
+public class MyThread2 extends Thread{
 
     private int startSkierId;
     private int endSkierId;
@@ -32,9 +31,9 @@ public class MyThread extends Thread{
         System.out.println(new Gson().toJson(param));
     }
 
-    public MyThread(int startSkierId, int endSkierId, int startTime, int endTime,
-                    int requestsPerThread, int liftNum, String url,
-                    CountDownLatch count, CountDownLatch totalThreads, ResultData resultData, int phase) {
+    public MyThread2(int startSkierId, int endSkierId, int startTime, int endTime,
+                     int requestsPerThread, int liftNum, String url,
+                     CountDownLatch count, CountDownLatch totalThreads, ResultData resultData, int phase) {
         this.startSkierId = startSkierId;
         this.endSkierId = endSkierId;
         this.startTime = startTime;
@@ -68,7 +67,17 @@ public class MyThread extends Thread{
             param.put("waitTime", waitTime);
 
             try {
-                MyHttpClient.execute(url, param, resultData);
+                // Execute the method.
+                long beforeSending = System.currentTimeMillis();
+                CloseableHttpResponse response =  MyHttpClient.execute(url, param);
+                long afterSending = System.currentTimeMillis();
+                long latency = afterSending - beforeSending;
+
+                int statusCode = response == null ? 0 : response.getStatusLine().getStatusCode();
+
+                resultData.getResponseTimeList().add(new Pair<>(latency, afterSending));
+                resultData.getRecords().add(CsvRecord.builder().requestType("POST").latency(latency).startTime(param.get("startTime"))
+                        .responseCode(statusCode).build());
 
             } catch (IOException e) {
                 e.printStackTrace();

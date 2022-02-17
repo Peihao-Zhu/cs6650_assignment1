@@ -14,13 +14,15 @@ public class Part2Data {
     private static long p99Responsetime;
     private static long minResponseTime;
     private static long maxResponsetime;
+    private static long wallTime;
 
-    public static void compute(List<Pair<Long, Long>> responseTimeList, long wallTime) {
+    public static void compute(List<Pair<Long, Long>> responseTimeList, long time) {
         int len = responseTimeList.size();
         if(len == 0) return ;
         Collections.sort(responseTimeList, (a,b) -> {
             return (int) (a.getKey() - b.getKey());
         });
+        wallTime = time;
         minResponseTime = responseTimeList.get(0).getKey();
         maxResponsetime = responseTimeList.get(len-1).getKey();
         if(len % 2 == 0)
@@ -36,12 +38,13 @@ public class Part2Data {
 
     public static void output() {
        String str = "Client2 Data{" +
-                "\n mean response time=" + meanResponseTime + "(millisecs)" +
-                "\n median response time=" + medianResponseTime +  "(millisecs)" +
-                "\n throughput=" + throughput +
-                "\n p99 (99th percentile) response time.=" + p99Responsetime + "(millisecs)" +
-                "\n min response time=" + minResponseTime + "(millisecs)" +
-                "\n max response time=" + maxResponsetime + "(millisecs)" +
+                "\n mean response time = " + meanResponseTime + "(millisecs)" +
+                "\n median response time = " + medianResponseTime +  "(millisecs)" +
+               "\n wall time = " + wallTime +  "(millisecs)" +
+                "\n throughput = " + throughput +
+                "\n p99 (99th percentile) response time = " + p99Responsetime + "(millisecs)" +
+                "\n min response time = " + minResponseTime + "(millisecs)" +
+                "\n max response time = " + maxResponsetime + "(millisecs)" +
                "\n}";
 
        System.out.println(str);

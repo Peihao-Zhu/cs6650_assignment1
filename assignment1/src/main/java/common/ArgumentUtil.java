@@ -1,9 +1,9 @@
-package Part1;
+package common;
 
 import org.apache.commons.cli.*;
 
 public class ArgumentUtil {
-    public static Argument  parse(String[] args) throws ParseException {
+    public static Argument parse(String[] args) throws ParseException {
         // create Options object
         Options options = new Options();
 

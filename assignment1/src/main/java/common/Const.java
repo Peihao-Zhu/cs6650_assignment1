@@ -1,4 +1,4 @@
-package Part1;
+package common;
 
 public class Const {
     public final static String NumThread = "numThreads";

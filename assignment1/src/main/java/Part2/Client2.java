@@ -1,15 +1,18 @@
-package Part1;
+package Part2;
 
-import java.util.concurrent.*;
+import common.Argument;
+import common.ResultData;
 
-public class Client {
+import java.util.concurrent.CountDownLatch;
+
+public class Client2 {
 
     private Argument argument;
     private String url;
     private CountDownLatch totalThreads;
     private ResultData resultData;
 
-    public Client(Argument argument, String url, CountDownLatch totalThreads, ResultData resultData) {
+    public Client2(Argument argument, String url, CountDownLatch totalThreads, ResultData resultData) {
         this.argument = argument;
         this.url = url;
         this.totalThreads = totalThreads;
@@ -17,7 +20,7 @@ public class Client {
     }
     public void testSingleRequestLatency() throws InterruptedException {
         final CountDownLatch count = new CountDownLatch(1);
-        MyThread thread = new MyThread(1, 20000, 1, 90, 10000, argument.getNumLifts(), url, count, totalThreads, resultData, 1);
+        MyThread2 thread = new MyThread2(1, 20000, 1, 90, 10000, argument.getNumLifts(), url, count, totalThreads, resultData, 1);
         thread.start();
         count.await();
     }
@@ -31,7 +34,7 @@ public class Client {
         for(int i = 0; i < launchThreads; i++) {
             int startSkierId = i * skierIdsPerThread;
             int endSkierId = (i+1) * skierIdsPerThread - 1;
-            MyThread thread = new MyThread(startSkierId, endSkierId, 1, 90, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 1);
+            MyThread2 thread = new MyThread2(startSkierId, endSkierId, 1, 90, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 1);
             thread.start();
         }
         count.await();
@@ -46,7 +49,7 @@ public class Client {
             int startSkierId = i * skierIdsPerThread;
             int endSkierId = (i+1) * skierIdsPerThread - 1;
 
-            MyThread thread = new MyThread(startSkierId, endSkierId, 91, 360, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 2);
+            MyThread2 thread = new MyThread2(startSkierId, endSkierId, 91, 360, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 2);
             new Thread(thread).start();
         }
         count.await();
@@ -61,7 +64,7 @@ public class Client {
             int startSkierId = i * skierIdsPerThread;
             int endSkierId = (i+1) * skierIdsPerThread - 1;
 
-            MyThread thread = new MyThread(startSkierId, endSkierId, 361, 420, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 3);
+            MyThread2 thread = new MyThread2(startSkierId, endSkierId, 361, 420, requestPerThread, argument.getNumLifts(), url, count, totalThreads, resultData, 3);
             new Thread(thread).start();
         }
         count.await();
